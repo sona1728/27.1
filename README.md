@@ -25,4 +25,18 @@ We can achieve following kind of joins using Map-Side techniques,
 - We can also use the Secondary Sort technique to control the order of the records.
 
 # Bucket Map Join:
-- 
+- A bucket map join is used when the tables are large and all the tables used in the join are bucketed on the join columns. In this type of join, one table should have buckets in multiples of the number of buckets in another table.
+
+For example:
+
+if one table has 2 buckets then the other table must have either 2 buckets or a multiple of 2 buckets (2, 4, 6, and so on). If the preceding condition is satisfied then the joining can be done at the mapper side only, otherwise a normal inner join is performed. This means that only the required buckets are fetched on the mapper side and not the complete table. That is, only the matching buckets of all small tables are replicated onto each mapper. Doing this, the efficiency of the query is improved drastically. In a bucket map join, data is not sorted.
+
+# SMBM Join:
+Join is done in Mapper only. The corresponding buckets are joined with each other at the mapper.
+- Used When all tables are:
+1.Large.
+2.Bucketed using the join columns.
+3.Sorted using the join columns.
+4.All tables have the same number of buckets.
+
+
